@@ -1,1 +1,2 @@
-
+I noticed that the array of followers for each person is already sorted,
+so if we just sort the main people by their posts, it may make it easier to sort the array of followers.
