@@ -3,3 +3,4 @@ so if we just sort the main people by their posts, it may make it easier to sort
     - The array of followers are only sorted by user number.
       For the second requirement, the assignment asks for the followers array to be sorted by their individual posts
         like the first requirement, just for the array for each user.
+    - Though the idea of using the sorting algorithms we use to sort the main users on the array as well would be correct I assume.
