@@ -1,3 +1,5 @@
+import copy
+
 def main():
 
     # read from file
@@ -17,8 +19,8 @@ def main():
                 "friends": friends
             })
 
-    BubbleSort(users) # calls (i) bubble sort
-    BubbleSort_2(users) # calls (ii) bubble sort
+    BubbleSort(copy.deepcopy(users)) # calls (i) bubble sort
+    BubbleSort_2(copy.deepcopy(users)) # calls (ii) bubble sort
 
 ############################################################################
 # (i) Bubble Sort
