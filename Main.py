@@ -1,4 +1,8 @@
 import copy
+import time
+
+#This is the command to get the time in nanoseconds, _ms for milliseconds if needed
+# start_time_ns = time.perf_counter_ns()
 
 def main():
 
