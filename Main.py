@@ -10,6 +10,7 @@ def main():
 
             friends = f_list.strip()[1:-1].split()
 
+            # adding data to a dictionary
             users.append({
                 "name": name,
                 "posts": posts,
@@ -35,6 +36,7 @@ def BubbleSort(users):
             if not didswap:
                 break
 
+        # writing to file
         for user in users:
             file.write(user["name"] + " " + str(user["posts"]) + "\n")
 
@@ -44,6 +46,7 @@ def BubbleSort(users):
 ############################################################################
 # (ii) Bubble Sort
 def BubbleSort_2(users):
+    # method to call the number of posts for each user in the friends list
     def get_posts(friend_name):
         for u in users:
             if u["name"] == friend_name:
@@ -66,6 +69,7 @@ def BubbleSort_2(users):
                 if not didswap:
                     break
 
+            # writing to file
             file.write(user["name"]+ " [")
             for friend in friends:
                 file.write(f"{friend}, ")
@@ -79,7 +83,6 @@ def BubbleSort_2(users):
     # print test (prints whole file)
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
-
 
 # end of file
 if __name__ == "__main__":
