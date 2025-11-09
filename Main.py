@@ -29,6 +29,7 @@ def main():
     BubbleSort_2(copy.deepcopy(users)) # calls (ii) bubble sort
 
     merge_sort(users, key=lambda u: (u["posts"], u ["name"]), reverse=False) # calls (i) merge sort
+    merge_sort2(users, ascending=True)
 
 ############################################################################
 # (i) Bubble Sort
