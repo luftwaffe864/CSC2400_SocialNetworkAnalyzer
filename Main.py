@@ -101,6 +101,18 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
     i = j = 0
     while i < len(left) and j < len(right):
         keyL, keyR = key(left[i]), key(right[j])
+        takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
+        if takeLeft:
+            merged.append(left[i]); i += 1
+        else:
+            merged.append(right[j]); j+= 1
+
+    if i < len(left): merged.extend(left[i:])
+    if j < len(right): merged.extend(right[j:])
+    return merged
+
+def write_userposts(filepath, users_sorted):
+    with open(
     # print test (prints whole file)
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
