@@ -146,6 +146,30 @@ def merge_sort2(users, ascending=True):
         mid = len(a) // 2
         left = msort(a[:mid], key, reverse)
         right = msort(a[mid:], key, reverse)
+
+        merged = []
+        i = j = 0
+        while i < len(left) and j < len(right):
+            keyL, keyR = key(left[i]), key(right[j])
+            takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
+            if takeLeft:
+                merged.append(left[i]); i += 1
+            else:
+                merged.append(right[j]); j += 1
+        if i < len(left): merged.extend(left[i:])
+        if j < len(right): merged.extend(right[j:])
+        return merged
+
+    users_in_order = sorted(users, key=lambda u: user_index(u["name"]))
+
+    with open("userfriends_MerSort.txt", "w") as outFile:
+        for u in users_in_order:
+            # Sorts the friends list by their posts, and if same number of posts, then go by user number
+            friends = list(u["friends"])
+            sorted_friends = msort(friends, key=lambda fname: (posts_by_user.get(fname, 0), fname),
+                                  reverse=not ascending)
+            outFile.write(f"{u['name']} [{' '.join(sorted_friends)}]\n")
+            
 # end of file
 if __name__ == "__main__":
     main()
