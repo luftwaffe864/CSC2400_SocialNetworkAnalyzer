@@ -107,7 +107,7 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
             if takeLeft:
                 merged.append(left[i]); i += 1
             else:
-                merged.append(right[j]); j+= 1
+                merged.append(right[j]); j += 1
     
         if i < len(left): merged.extend(left[i:])
         if j < len(right): merged.extend(right[j:])
