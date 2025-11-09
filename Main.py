@@ -1,7 +1,7 @@
 import copy
 import time
 
-#This is the command to get the time in nanoseconds, _ms for milliseconds if needed
+# This is the command to get the time in nanoseconds, _ms for milliseconds if needed
 # start_time_ns = time.perf_counter_ns()
 # end_time_ns = time.perf_counter_ns()
 # elapsed_time_ns = end_time_ns - start_time_ns
@@ -25,11 +25,21 @@ def main():
                 "friends": friends
             })
 
-    BubbleSort(copy.deepcopy(users)) # calls (i) bubble sort
-    BubbleSort_2(copy.deepcopy(users)) # calls (ii) bubble sort
+    BubbleSort(copy.deepcopy(users))  # calls (i) bubble sort
+    bub_times = BubbleSort_2(copy.deepcopy(users))  # (ii) bubble sort — now returns per-user times
 
-    merge_sort(users, key=lambda u: (u["posts"], u ["name"]), reverse=False) # calls (i) merge sort
-    merge_sort2(users, ascending=True)
+    merge_sort(users, key=lambda u: (u["posts"], u["name"]), reverse=False)  # (i) merge sort
+    mer_times = merge_sort2(copy.deepcopy(users), ascending=True)  # now returns per-user times
+
+    # Write per-user runtimes in user_1..user_100 order
+    with open("runtimes.txt", "w") as rt:
+        n = len(users)
+        for i in range(1, n + 1):
+            uname = f"user_{i}"
+            bt = bub_times.get(uname, 0)
+            mt = mer_times.get(uname, 0)
+            rt.write(f"({bt}, {mt})\n")
+
 
 ############################################################################
 # (i) Bubble Sort
@@ -64,11 +74,13 @@ def BubbleSort_2(users):
                 return u["posts"]
         return None
 
+    bub_times = {}
     with open("userfriendsBubSort.txt", "w") as file:
         for user in users:
             friends = user["friends"]
             k = len(friends)
 
+            start_ns = time.perf_counter_ns()
             for i in range(k - 1):
                 didswap = False
 
@@ -79,14 +91,16 @@ def BubbleSort_2(users):
 
                 if not didswap:
                     break
+            end_ns = time.perf_counter_ns()
+            bub_times[user["name"]] = end_ns - start_ns
 
             # writing to file
-            file.write(user["name"]+ " [")
+            file.write(user["name"] + " [")
             for friend in friends:
                 file.write(f"{friend}, ")
-            file.write(f"] \n")
+            file.write("] \n")
 
-    return None
+    return bub_times
 ############################################################################
 
 ############################################################################
@@ -95,11 +109,11 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
     def _merge_sort(a):
         if len(a) <= 1:
             return a
-    
+
         mid = len(a) // 2
-        left = merge_sort(a[:mid], key, reverse)
-        right = merge_sort(a[mid:], key, reverse)
-    
+        left = _merge_sort(a[:mid])     # <-- recurse on helper
+        right = _merge_sort(a[mid:])    # <-- recurse on helper
+
         merged = []
         i = j = 0
         while i < len(left) and j < len(right):
@@ -109,22 +123,18 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
                 merged.append(left[i]); i += 1
             else:
                 merged.append(right[j]); j += 1
-    
+
         if i < len(left): merged.extend(left[i:])
         if j < len(right): merged.extend(right[j:])
         return merged
 
     sorted_arr = _merge_sort(list(arr))
-    
+
     with open("userposts_MerSort.txt", "w") as outFile:
         for u in sorted_arr:
             outFile.write(u["name"] + " " + str(u["posts"]) + "\n")
-    
-    return sorted_arr
-    # print test (prints whole file)
-    # for u in users[:100]:
-    #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
 
+    return sorted_arr
 ############################################################################
 
 ############################################################################
@@ -136,10 +146,9 @@ def merge_sort2(users, ascending=True):
     def user_index(name: str) -> int:
         try:
             return int(name.split("_")[1])
-        except Exc:
+        except Exception:
             return 10**9
 
-    
     def msort(arr, key=lambda x: x, reverse=False):
         a = list(arr)
         if len(a) <= 1:
@@ -161,16 +170,26 @@ def merge_sort2(users, ascending=True):
         if j < len(right): merged.extend(right[j:])
         return merged
 
+    mer_times = {}
     users_in_order = sorted(users, key=lambda u: user_index(u["name"]))
 
     with open("userfriends_MerSort.txt", "w") as outFile:
         for u in users_in_order:
             # Sorts the friends list by their posts, and if same number of posts, then go by user number
             friends = list(u["friends"])
-            sorted_friends = msort(friends, key=lambda fname: (users_posts.get(fname, 0), fname),
-                                  reverse=not ascending)
+            start_ns = time.perf_counter_ns()
+            sorted_friends = msort(
+                friends,
+                key=lambda fname: (users_posts.get(fname, 0), user_index(fname)),
+                reverse=not ascending
+            )
+            end_ns = time.perf_counter_ns()
+            mer_times[u["name"]] = end_ns - start_ns
+
             outFile.write(f"{u['name']} [{' '.join(sorted_friends)}]\n")
-            
+
+    return mer_times
+
 # end of file
 if __name__ == "__main__":
     main()
