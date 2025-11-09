@@ -1,14 +1,14 @@
 import copy
 import time
-import matplotlib.pyplot as plt  # for the extra credit plot
+import matplotlib.pyplot as plt
 
 # This is the command to get the time in nanoseconds, _ms for milliseconds if needed
 # start_time_ns = time.perf_counter_ns()
 # end_time_ns = time.perf_counter_ns()
 # elapsed_time_ns = end_time_ns - start_time_ns
 
-def main():
 
+def main():
     # read from file
     users = []
 
@@ -16,7 +16,6 @@ def main():
         for line in file:
             name, posts, f_list = line.split(" ", 2)
             posts = int(posts)
-
             friends = f_list.strip()[1:-1].split()
 
             # adding data to a dictionary
@@ -26,11 +25,17 @@ def main():
                 "friends": friends
             })
 
-    BubbleSort(copy.deepcopy(users))  # (i) bubble sort
-    bub_times = BubbleSort_2(copy.deepcopy(users))  # (ii) bubble sort — returns per-user times
+    # (i) Bubble sort
+    BubbleSort(copy.deepcopy(users))
 
-    merge_sort(users, key=lambda u: (u["posts"], u["name"]), reverse=False)  # (i) merge sort
-    mer_times = merge_sort2(copy.deepcopy(users), ascending=True)  # (ii) merge sort — returns per-user times
+    # (ii) Bubble sort for friends (with runtimes)
+    bub_times = BubbleSort_2(copy.deepcopy(users))
+
+    # (i) Merge sort
+    merge_sort(users, key=lambda u: (u["posts"], u["name"]), reverse=False)
+
+    # (ii) Merge sort for friends (with runtimes)
+    mer_times = merge_sort2(copy.deepcopy(users), ascending=True)
 
     # Write per-user runtimes in user_1..user_100 order
     with open("runtimes.txt", "w") as rt:
@@ -40,9 +45,6 @@ def main():
             bt = bub_times.get(uname, 0)
             mt = mer_times.get(uname, 0)
             rt.write(f"({bt}, {mt})\n")
-
-    # --- EXTRA CREDIT: create plot ---
-    plot_runtimes()
 
 
 ############################################################################
@@ -68,10 +70,10 @@ def BubbleSort(users):
     return None
 ############################################################################
 
+
 ############################################################################
-# (ii) Bubble Sort for Friend Lists
+# (ii) Bubble Sort for friends (timed)
 def BubbleSort_2(users):
-    # method to call the number of posts for each user in the friends list
     def get_posts(friend_name):
         for u in users:
             if u["name"] == friend_name:
@@ -79,6 +81,7 @@ def BubbleSort_2(users):
         return None
 
     bub_times = {}
+
     with open("userfriendsBubSort.txt", "w") as file:
         for user in users:
             friends = user["friends"]
@@ -96,22 +99,26 @@ def BubbleSort_2(users):
             end_ns = time.perf_counter_ns()
             bub_times[user["name"]] = end_ns - start_ns
 
-            # writing to file (cleaner format)
-            file.write(f"{user['name']} [{' '.join(friends)}]\n")
+            # writing to file
+            file.write(user["name"] + " [")
+            for friend in friends:
+                file.write(f"{friend}, ")
+            file.write("] \n")
 
     return bub_times
 ############################################################################
 
+
 ############################################################################
-# (i) Merge Sort
+# (i) Merge Sort for posts
 def merge_sort(arr, key=lambda x: x, reverse=False):
     def _merge_sort(a):
         if len(a) <= 1:
             return a
 
         mid = len(a) // 2
-        left = _merge_sort(a[:mid])     # <-- recurse on helper
-        right = _merge_sort(a[mid:])    # <-- recurse on helper
+        left = _merge_sort(a[:mid])
+        right = _merge_sort(a[mid:])
 
         merged = []
         i = j = 0
@@ -119,12 +126,16 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
             keyL, keyR = key(left[i]), key(right[j])
             takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
             if takeLeft:
-                merged.append(left[i]); i += 1
+                merged.append(left[i])
+                i += 1
             else:
-                merged.append(right[j]); j += 1
+                merged.append(right[j])
+                j += 1
 
-        if i < len(left): merged.extend(left[i:])
-        if j < len(right): merged.extend(right[j:])
+        if i < len(left):
+            merged.extend(left[i:])
+        if j < len(right):
+            merged.extend(right[j:])
         return merged
 
     sorted_arr = _merge_sort(list(arr))
@@ -136,13 +147,12 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
     return sorted_arr
 ############################################################################
 
+
 ############################################################################
-# (ii) Merge Sort for Friend Lists
+# (ii) Merge Sort for friends (timed)
 def merge_sort2(users, ascending=True):
-    # allows a faster lookup combining user and posts
     users_posts = {u["name"]: u["posts"] for u in users}
 
-    # Grabs the index from the user for the output order
     def user_index(name: str) -> int:
         try:
             return int(name.split("_")[1])
@@ -163,11 +173,15 @@ def merge_sort2(users, ascending=True):
             keyL, keyR = key(left[i]), key(right[j])
             takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
             if takeLeft:
-                merged.append(left[i]); i += 1
+                merged.append(left[i])
+                i += 1
             else:
-                merged.append(right[j]); j += 1
-        if i < len(left): merged.extend(left[i:])
-        if j < len(right): merged.extend(right[j:])
+                merged.append(right[j])
+                j += 1
+        if i < len(left):
+            merged.extend(left[i:])
+        if j < len(right):
+            merged.extend(right[j:])
         return merged
 
     mer_times = {}
@@ -175,7 +189,6 @@ def merge_sort2(users, ascending=True):
 
     with open("userfriends_MerSort.txt", "w") as outFile:
         for u in users_in_order:
-            # Sorts the friends list by their posts, and if same number of posts, then go by user number
             friends = list(u["friends"])
             start_ns = time.perf_counter_ns()
             sorted_friends = msort(
@@ -191,8 +204,9 @@ def merge_sort2(users, ascending=True):
     return mer_times
 ############################################################################
 
+
 ############################################################################
-# Extra Credit: Plot Runtimes
+# EXTRA CREDIT: Plot runtimes comparison
 def plot_runtimes():
     bub_times = []
     mer_times = []
@@ -223,6 +237,7 @@ def plot_runtimes():
     plt.savefig("runtimes_plot.png")
     plt.close()
 ############################################################################
+
 
 # end of file
 if __name__ == "__main__":
