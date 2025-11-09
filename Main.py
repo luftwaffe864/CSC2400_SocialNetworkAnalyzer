@@ -111,8 +111,9 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
     if j < len(right): merged.extend(right[j:])
     return merged
 
-def write_userposts(filepath, users_sorted):
-    with open(
+with open("userposts_MerSort.txt", "w") as outFile:
+    for u in sorted_arr:
+        outFile.write(u["name"] + " " + str(u["posts"]) + "\n")
     # print test (prints whole file)
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
