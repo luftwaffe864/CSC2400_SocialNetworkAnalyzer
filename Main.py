@@ -28,6 +28,8 @@ def main():
     BubbleSort(copy.deepcopy(users)) # calls (i) bubble sort
     BubbleSort_2(copy.deepcopy(users)) # calls (ii) bubble sort
 
+    merge_sort(users, key=lambda u: (u["posts"], u ["name"]), reverse=False) # calls (i) merge sort
+
 ############################################################################
 # (i) Bubble Sort
 def BubbleSort(users):
@@ -111,9 +113,13 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
         if j < len(right): merged.extend(right[j:])
         return merged
 
-with open("userposts_MerSort.txt", "w") as outFile:
-    for u in sorted_arr:
-        outFile.write(u["name"] + " " + str(u["posts"]) + "\n")
+    sorted_arr = _merge_sort(list(arr))
+    
+    with open("userposts_MerSort.txt", "w") as outFile:
+        for u in sorted_arr:
+            outFile.write(u["name"] + " " + str(u["posts"]) + "\n")
+    
+    return sorted_arr
     # print test (prints whole file)
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
