@@ -88,7 +88,19 @@ def BubbleSort_2(users):
 
 ############################################################################
 # (i) Merge Sort
+def merge_sort(arr, key=lambda x: x, reverse=False):
+    a = list(arr)
+    if len(a) <= 1:
+        return a
 
+    mid = len(a) // 2
+    left = merge_sort(a[:mid], key, reverse)
+    right = merge_sort(a[mid:], key, reverse)
+
+    merged = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        keyL, keyR = key(left[i]), key(right[j])
     # print test (prints whole file)
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
