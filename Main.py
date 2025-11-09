@@ -131,6 +131,21 @@ def merge_sort2(users, ascending=True):
     # allows a faster lookup combining user and posts
     users_posts = {u["name"]: u["posts"] for u in users}
 
+    # Grabs the index from the user for the output order
+    def user_index(name: str) -> int:
+        try:
+            return int(name.split("_")[1])
+        except Exc:
+            return 10**9
+
+    
+    def msort(arr, key=lambda x: x, reverse=False):
+        a = list(arr)
+        if len(a) <= 1:
+            return a
+        mid = len(a) // 2
+        left = msort(a[:mid], key, reverse)
+        right = msort(a[mid:], key, reverse)
 # end of file
 if __name__ == "__main__":
     main()
