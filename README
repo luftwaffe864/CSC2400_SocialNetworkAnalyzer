@@ -4,3 +4,5 @@ This program reads a social network dataset (users.txt), then:
     b) Sorts each user’s friend list by the friends’ number of posts using Bubble Sort and Merge Sort
     c) Measures and records per-user runtimes (in nanoseconds) for sorting friend lists with both algorithms.
     d) plots the runtimes for extra credit.
+
+You must install matplotlib before running the code for this to run.
