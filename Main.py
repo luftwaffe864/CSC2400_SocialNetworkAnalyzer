@@ -227,3 +227,4 @@ def plot_runtimes():
 # end of file
 if __name__ == "__main__":
     main()
+plot_runtimes()
