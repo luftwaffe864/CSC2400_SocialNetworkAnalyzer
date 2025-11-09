@@ -1,6 +1,6 @@
-I noticed that the array of followers for each person is already sorted,
-so if we just sort the main people by their posts, it may make it easier to sort the array of followers.
-    - The array of followers are only sorted by user number.
-      For the second requirement, the assignment asks for the followers array to be sorted by their individual posts
-        like the first requirement, just for the array for each user.
-    - Though the idea of using the sorting algorithms we use to sort the main users on the array as well would be correct I assume.
+Project overview
+This program reads a social network dataset (users.txt), then:
+    a) Sorts users by number of posts using Bubble Sort and Merge Sort.
+    b) Sorts each user’s friend list by the friends’ number of posts using Bubble Sort and Merge Sort
+    c) Measures and records per-user runtimes (in nanoseconds) for sorting friend lists with both algorithms.
+    d) plots the runtimes for extra credit.
