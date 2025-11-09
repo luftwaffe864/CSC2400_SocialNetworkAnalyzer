@@ -89,27 +89,27 @@ def BubbleSort_2(users):
 ############################################################################
 # (i) Merge Sort
 def merge_sort(arr, key=lambda x: x, reverse=False):
-    a = list(arr)
-    if len(a) <= 1:
-        return a
-
-    mid = len(a) // 2
-    left = merge_sort(a[:mid], key, reverse)
-    right = merge_sort(a[mid:], key, reverse)
-
-    merged = []
-    i = j = 0
-    while i < len(left) and j < len(right):
-        keyL, keyR = key(left[i]), key(right[j])
-        takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
-        if takeLeft:
-            merged.append(left[i]); i += 1
-        else:
-            merged.append(right[j]); j+= 1
-
-    if i < len(left): merged.extend(left[i:])
-    if j < len(right): merged.extend(right[j:])
-    return merged
+    def _merge_sort(a):
+        if len(a) <= 1:
+            return a
+    
+        mid = len(a) // 2
+        left = merge_sort(a[:mid], key, reverse)
+        right = merge_sort(a[mid:], key, reverse)
+    
+        merged = []
+        i = j = 0
+        while i < len(left) and j < len(right):
+            keyL, keyR = key(left[i]), key(right[j])
+            takeLeft = (keyL <= keyR and not reverse) or (keyL >= keyR and reverse)
+            if takeLeft:
+                merged.append(left[i]); i += 1
+            else:
+                merged.append(right[j]); j+= 1
+    
+        if i < len(left): merged.extend(left[i:])
+        if j < len(right): merged.extend(right[j:])
+        return merged
 
 with open("userposts_MerSort.txt", "w") as outFile:
     for u in sorted_arr:
