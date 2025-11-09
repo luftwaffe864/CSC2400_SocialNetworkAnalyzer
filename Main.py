@@ -167,7 +167,7 @@ def merge_sort2(users, ascending=True):
         for u in users_in_order:
             # Sorts the friends list by their posts, and if same number of posts, then go by user number
             friends = list(u["friends"])
-            sorted_friends = msort(friends, key=lambda fname: (posts_by_user.get(fname, 0), fname),
+            sorted_friends = msort(friends, key=lambda fname: (users_posts.get(fname, 0), fname),
                                   reverse=not ascending)
             outFile.write(f"{u['name']} [{' '.join(sorted_friends)}]\n")
             
