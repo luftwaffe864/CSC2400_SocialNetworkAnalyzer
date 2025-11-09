@@ -124,6 +124,13 @@ def merge_sort(arr, key=lambda x: x, reverse=False):
     # for u in users[:100]:
     #     print(f"{u['name']}: {u['posts']} friends → {u['friends']}")
 
+############################################################################
+
+############################################################################
+def merge_sort2(users, ascending=True):
+    # allows a faster lookup combining user and posts
+    users_posts = {u["name"]: u["posts"] for u in users}
+
 # end of file
 if __name__ == "__main__":
     main()
