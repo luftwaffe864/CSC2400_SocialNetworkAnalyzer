@@ -1,5 +1,6 @@
 import time
 import random
+import matplotlib.pyplot as plt
 
 DESCENDING = True  # highest first
 
@@ -147,5 +148,45 @@ def qselect(users, k=20):
 
     return qsel_times_ns
 
+def plot_runtimes():
+    """Read runtimes.txt and plot Sort+Select vs QuickSelect times."""
+    sort_times = []
+    qsel_times = []
+
+    # Read runtimes.txt
+    with open("runtimes.txt", "r") as file:
+        for line in file:
+            # line format: (SortSelTime, QSelTime)
+            line = line.strip("()\n ")
+            if not line:
+                continue
+            parts = line.split(",")
+            if len(parts) == 2:
+                sort_times.append(int(parts[0]))
+                qsel_times.append(int(parts[1]))
+
+    if not sort_times or not qsel_times:
+        print("[WARN] No runtimes found to plot.")
+        return
+
+    x_vals = range(1, len(sort_times) + 1)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_vals, sort_times, label="Sort + Select (BubbleSort)", marker='o', linewidth=1)
+    plt.plot(x_vals, qsel_times, label="QuickSelect", marker='x', linewidth=1)
+    plt.title("Algorithm Runtimes per User (k = 20)")
+    plt.xlabel("User Index")
+    plt.ylabel("Runtime (nanoseconds)")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+
+    # Save plot
+    plt.savefig("runtimes_plot.png")
+    plt.close()
+    print("[INFO] Saved plot to runtimes_plot.png")
+
 if __name__ == "__main__":
     main()
+    plot_runtimes()
+    
