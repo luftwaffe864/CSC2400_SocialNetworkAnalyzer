@@ -1,3 +1,10 @@
+##########
+# Credit Statement:
+# We only worked within our group
+# The author(s) acknowledge the utilization of ChatGPT, a language model developed by OpenAI, in the preparation of this assignment.
+# ChatGPT was employed in the following manners within this assignment: The ways specified in the assignment such as, how to read/generate files with python,
+# how to measure the clock-time, and how to plot graphs using python.
+##########
 import time
 import random
 import matplotlib.pyplot as plt
