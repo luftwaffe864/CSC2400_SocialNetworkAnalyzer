@@ -3,8 +3,7 @@
 # Credit Statement:
 # We only worked within our group
 # The author(s) acknowledge the utilization of ChatGPT, a language model developed by OpenAI, in the preparation of this assignment.
-# ChatGPT was employed in the following manners within this assignment: The ways specified in the assignment such as, how to read/generate files with python,
-# and researched how to find the best paths to take to get to the correct user.
+# ChatGPT was employed in the following manners within this assignment: The ways specified in the assignment such as, how to read/generate files with python.
 ##########
 INF = 10**9  # a large "infinity" value
 
